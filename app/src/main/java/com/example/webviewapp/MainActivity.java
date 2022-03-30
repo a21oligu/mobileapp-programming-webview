@@ -16,14 +16,15 @@ import androidx.appcompat.widget.Toolbar;
 public class MainActivity extends AppCompatActivity {
 
     private WebView webView;
+    private String external_url = "https://student.his.se";
+    private String internal_url = "file:///android_asset/html/assignment2.html";
 
     public void showExternalWebPage(){
-        // TODO: Add your code for showing external web page here
-        System.out.println("Show internal web page");
+        this.webView.loadUrl(external_url);
     }
 
     public void showInternalWebPage(){
-        // TODO: Add your code for showing internal web page here
+        this.webView.loadUrl(internal_url);
     }
 
     @Override
@@ -33,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        this.webView = findViewById(R.id.my_webview);
+        this.webView = (WebView) findViewById(R.id.my_webview);
+        this.webView.getSettings().setJavaScriptEnabled(true);
 
         /*
         * Rename your App. Tip: Values->Strings
@@ -87,11 +89,13 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_external_web) {
             Log.d("==>","Will display external web page");
+            showExternalWebPage();
             return true;
         }
 
         if (id == R.id.action_internal_web) {
             Log.d("==>","Will display internal web page");
+            showInternalWebPage();
             return true;
         }
 
