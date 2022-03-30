@@ -1,42 +1,53 @@
 
 # Rapport
 
-**Skriv din rapport här!**
+Jag började med att ändra namnet på appen till _Assignment2_. Därefter lade jag till följande kod i manifesten:
 
-_Du kan ta bort all text som finns sedan tidigare_.
+`<uses-permission android:name="android.permission.INTERNET" />`
 
-## Följande grundsyn gäller dugga-svar:
+Implementeringen av denna kod gav appen tillåtelse att hämta data från internet. 
 
-- Ett kortfattat svar är att föredra. Svar som är längre än en sida text (skärmdumpar och programkod exkluderat) är onödigt långt.
-- Svaret skall ha minst en snutt programkod.
-- Svaret skall inkludera en kort övergripande förklarande text som redogör för vad respektive snutt programkod gör eller som svarar på annan teorifråga.
-- Svaret skall ha minst en skärmdump. Skärmdumpar skall illustrera exekvering av relevant programkod. Eventuell text i skärmdumpar måste vara läsbar.
-- I de fall detta efterfrågas, dela upp delar av ditt svar i för- och nackdelar. Dina för- respektive nackdelar skall vara i form av punktlistor med kortare stycken (3-4 meningar).
+Därefter bytte jag ut TextView i [content_main.xml](https://github.com/a21oligu/mobileapp-programming-webview/blob/master/app/src/main/res/layout/content_main.xml) mot en WebView. Denna WebView gav jag även id:n "my_webview". Jag kunde efter det hämta komponenten med metoden _findById(R.id.my_webview)_ och tilldela den till den privata variabeln webView jag skapade. För att kunna ladda en intern html fil, behövde jag också skapa en assets mapp. Detta för att appen ska veta var filen ska hämtas ifrån. I assets mappen skapade jag ännu en map vid namn html. I denna skapades filen assignment2.html, som är den interna html filen som laddas av appen. 
 
-Programkod ska se ut som exemplet nedan. Koden måste vara korrekt indenterad då den blir lättare att läsa vilket gör det lättare att hitta syntaktiska fel.
+För att ladda filerna användes metoden _loadUrl_ från webView i de två metoderna i kodblocket nedan:
 
 ```
-function errorCallback(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            // Geolocation API stöds inte, gör något
-            break;
-        case error.POSITION_UNAVAILABLE:
-            // Misslyckat positionsanrop, gör något
-            break;
-        case error.UNKNOWN_ERROR:
-            // Okänt fel, gör något
-            break;
-    }
+private String external_url = "https://student.his.se";
+private String internal_url = "file:///android_asset/html/assignment2.html";
+
+public void showExternalWebPage(){
+    this.webView.loadUrl(external_url);
+}
+
+public void showInternalWebPage(){
+    this.webView.loadUrl(internal_url);
 }
 ```
 
-Bilder läggs i samma mapp som markdown-filen.
+Dessa metoderna kallades sedan när användaren använde respektive knapp i _OptionsMenu_, se kodblocket nedan:
 
-![](android.png)
+```
+public boolean onOptionsItemSelected(MenuItem item) {
+    int id = item.getItemId();
 
-Läs gärna:
+    if (id == R.id.action_external_web) {
+        showExternalWebPage();
+        return true;
+    }
 
-- Boulos, M.N.K., Warren, J., Gong, J. & Yue, P. (2010) Web GIS in practice VIII: HTML5 and the canvas element for interactive online mapping. International journal of health geographics 9, 14. Shin, Y. &
-- Wunsche, B.C. (2013) A smartphone-based golf simulation exercise game for supporting arthritis patients. 2013 28th International Conference of Image and Vision Computing New Zealand (IVCNZ), IEEE, pp. 459–464.
-- Wohlin, C., Runeson, P., Höst, M., Ohlsson, M.C., Regnell, B., Wesslén, A. (2012) Experimentation in Software Engineering, Berlin, Heidelberg: Springer Berlin Heidelberg.
+    if (id == R.id.action_internal_web) {
+        showInternalWebPage();
+        return true;
+    }
+
+    return super.onOptionsItemSelected(item);
+}
+```
+
+Efter knapparna blivit tryckta renderas filen i appen. Resultaten går att se i bilderna nedan:
+
+### Extern
+![](external.png)
+
+### Intern
+![](internal.png)
