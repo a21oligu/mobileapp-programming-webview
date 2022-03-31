@@ -5,7 +5,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -35,8 +37,12 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         this.webView = (WebView) findViewById(R.id.my_webview);
-        this.webView.getSettings().setJavaScriptEnabled(true);
 
+        WebViewClient client = new WebViewClient();
+        webView.setWebViewClient(client);
+
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
         /*
         * Rename your App. Tip: Values->Strings
         * Enable Internet access for your App. Tip: Manifest
